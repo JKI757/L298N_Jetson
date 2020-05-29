@@ -11,8 +11,7 @@
  * Created on May 23, 2020, 12:58 AM
  */
 
-#ifndef L298N_JETSON_H
-#define L298N_JETSON_H
+#pragma once 
 
 #include <JetsonGPIO.h>
 #include <memory>
@@ -24,9 +23,10 @@ public:
     
     ~L298N_Jetson();
   
-   L298N_Jetson(const unsigned char EnablePin, 
-   const unsigned char IN1, const unsigned char IN2);
-   L298N_Jetson(const unsigned char IN1, const unsigned char IN2);
+   L298N_Jetson(int EnablePin, 
+   int IN1, int IN2);
+   L298N_Jetson(int IN1, int IN2);
+   L298N_Jetson(std::shared_ptr<GPIO::PWM> drive, int IN1, int IN2, bool setup);
    void setSpeed(const unsigned char pwmVal);
    const unsigned char getSpeed();
    void forward();
@@ -36,15 +36,15 @@ public:
    void reset();
 
 private:
-   unsigned char Enable;
-   unsigned char IN1;
-   unsigned char IN2;
+   int Enable;
+   int IN1;
+   int IN2;
    unsigned char pwmVal;
 
    std::shared_ptr<GPIO::PWM> Drive_PWM;
    
+   bool setup; //controls whether or not we control the PWM object.  False if we don't.
 
 };
 
-#endif /* L298N_JETSON_H */
 
